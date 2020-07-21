@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "000da87d-22f4-4b05-8c81-240f673418c1",
+		"name": "otus_arch",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ecaeb443-1947-4d5e-9e9a-02bb685fd194",
+						"exec": [
+							"pm.test(\"Should be correct status\", function () {\r",
+							"    pm.response.to.have.status(200);    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should be correct answer\", function () {    \r",
+							"    const healthData = pm.response.json();\r",
+							"    pm.expect(healthData.status).to.eql(\"OK\");    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/otusapp/{{studentName}}/health",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"otusapp",
+						"{{studentName}}",
+						"health"
+					]
+				},
+				"description": "Get status"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "2c290956-c0be-4390-9ae6-55a0845d924d",
+			"key": "baseUrl",
+			"value": "arch.homework"
+		},
+		{
+			"id": "8ca9529d-7bdb-46db-b7ee-f65488f0fde2",
+			"key": "studentName",
+			"value": "rined"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
