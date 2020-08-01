@@ -1,0 +1,15 @@
+apiVersion: skaffold/v2alpha4
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+  - image: rined/crud-app
+    context: app
+deploy:
+  helm:
+    releases:
+    - name: myapp
+      chartPath: crud-app-chart
+      values:
+        image: rined/crud-app

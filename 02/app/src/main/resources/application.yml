@@ -1,0 +1,29 @@
+server:
+  port: 8000
+  servlet:
+    context-path: /api/v1
+
+management:
+  endpoint:
+    health:
+      enabled: true
+      show-details: never
+      status:
+        order: FATAL,DOWN,OUT_OF_SERVICE,UNKNOWN,OK,UP
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: /
+      exposure:
+        include: '*'
+
+spring:
+  datasource:
+    url: jdbc:postgresql://pg-db:${pg.port}/${pg.db}
+    username: ${pg.user}
+    password: ${pg.password}
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none

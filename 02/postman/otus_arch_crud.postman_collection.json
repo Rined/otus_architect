@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "67839e49-4e4d-41bf-9027-2b192b9a4d16",
+		"name": "otus_arch_crud",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9c914686-9595-40d0-9b70-c4a1d26b4138",
+						"exec": [
+							"pm.test(\"Should be correct status\", function () {\r",
+							"    pm.response.to.have.status(200);    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should be correct answer\", function () {    \r",
+							"    const healthData = pm.response.json();\r",
+							"    pm.expect(healthData.status).to.eql(\"OK\");    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/otusapp/{{studentName}}/health",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"otusapp",
+						"{{studentName}}",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c39c2bd-a7c9-47df-98f8-87d9888f37d7",
+						"exec": [
+							"var responseJSON = pm.response.json();\r",
+							"pm.collectionVariables.set(\"userId\", responseJSON.id);\r",
+							"\r",
+							"pm.test(\"Should be return correct data\", function () {\r",
+							"    const responseJSON = pm.response.json();\r",
+							"    pm.expect(responseJSON.id).to.eql(pm.collectionVariables.get(\"userId\"));\r",
+							"    pm.expect(`\"${responseJSON.username}\"`).to.eql(pm.collectionVariables.get(\"data_username\"));\r",
+							"    pm.expect(`\"${responseJSON.firstName}\"`).to.eql(pm.collectionVariables.get(\"data_firstname\"));\r",
+							"    pm.expect(`\"${responseJSON.lastName}\"`).to.eql(pm.collectionVariables.get(\"data_lastname\"));\r",
+							"    pm.expect(`\"${responseJSON.email}\"`).to.eql(pm.collectionVariables.get(\"data_email\"));\r",
+							"    pm.expect(`\"${responseJSON.phone}\"`).to.eql(pm.collectionVariables.get(\"data_phone\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should be return correct status (201)\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": {{data_username}},\r\n    \"firstName\": {{data_firstname}},\r\n    \"lastName\": {{data_lastname}},\r\n    \"email\": {{data_email}},\r\n    \"phone\": {{data_phone}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/otusapp/{{studentName}}/user",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"otusapp",
+						"{{studentName}}",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "74132609-c22c-4dd6-bf40-df0fdd2d879d",
+						"exec": [
+							"pm.test(\"Should be return correct data\", function () {\r",
+							"    const responseJSON = pm.response.json();\r",
+							"    pm.expect(responseJSON.id).to.eql(pm.collectionVariables.get(\"userId\"));\r",
+							"    pm.expect(`\"${responseJSON.username}\"`).to.eql(pm.collectionVariables.get(\"data_username\"));\r",
+							"    pm.expect(`\"${responseJSON.firstName}\"`).to.eql(pm.collectionVariables.get(\"data_firstname\"));\r",
+							"    pm.expect(`\"${responseJSON.lastName}\"`).to.eql(pm.collectionVariables.get(\"data_lastname\"));\r",
+							"    pm.expect(`\"${responseJSON.email}\"`).to.eql(pm.collectionVariables.get(\"data_email\"));\r",
+							"    pm.expect(`\"${responseJSON.phone}\"`).to.eql(pm.collectionVariables.get(\"data_phone\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should be return correct status (200)\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/otusapp/{{studentName}}/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"otusapp",
+						"{{studentName}}",
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f6e67d5c-ab42-4471-91d6-ffa864c9e3fe",
+						"exec": [
+							"pm.test(\"Should be return correct data\", function () {\r",
+							"    const responseJSON = pm.response.json();\r",
+							"    pm.expect(responseJSON.id).to.eql(pm.collectionVariables.get(\"userId\"));\r",
+							"    pm.expect(`\"${responseJSON.username}\"`).to.eql(pm.collectionVariables.get(\"data_username\"));\r",
+							"    pm.expect(`\"${responseJSON.firstName}\"`).to.eql(pm.collectionVariables.get(\"put_data_firstname\"));\r",
+							"    pm.expect(`\"${responseJSON.lastName}\"`).to.eql(pm.collectionVariables.get(\"put_data_lastname\"));\r",
+							"    pm.expect(`\"${responseJSON.email}\"`).to.eql(pm.collectionVariables.get(\"put_data_email\"));\r",
+							"    pm.expect(`\"${responseJSON.phone}\"`).to.eql(pm.collectionVariables.get(\"put_data_phone\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should be return correct status (200)\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": {{put_data_firstname}},\r\n    \"lastName\": {{put_data_lastname}},\r\n    \"email\": {{put_data_email}},\r\n    \"phone\": {{put_data_phone}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/otusapp/{{studentName}}/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"otusapp",
+						"{{studentName}}",
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "64956156-689d-4180-9f0e-632bb7537e74",
+						"exec": [
+							"pm.test(\"Should be return correct status (204)\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/otusapp/{{studentName}}/user/{{userId}}",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"otusapp",
+						"{{studentName}}",
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c49449fc-5b67-4f46-8599-b43c30bb653d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "11d44440-28a4-41c1-ac1a-e6b6afcba459",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "3d9f1999-306b-46a5-89f2-b065c90d2cca",
+			"key": "userId",
+			"value": 1
+		},
+		{
+			"id": "08e41222-7c4e-4c42-b64c-525723089745",
+			"key": "data_username",
+			"value": "\"Username\""
+		},
+		{
+			"id": "48ed82eb-4fe6-4358-9d28-1df44294f7ff",
+			"key": "data_firstname",
+			"value": "\"FirstName\""
+		},
+		{
+			"id": "69e350e6-c2ff-43f5-9a97-a3da59eaf9b5",
+			"key": "data_lastname",
+			"value": "\"LastName\""
+		},
+		{
+			"id": "5a34fb58-c3e9-4344-a179-3da7b62ea84d",
+			"key": "data_email",
+			"value": "\"test@test.com\""
+		},
+		{
+			"id": "aa0bc89b-ed9c-49d2-8668-fbf1c020ef27",
+			"key": "data_phone",
+			"value": "\"+79999999999\""
+		},
+		{
+			"id": "e0f33b36-e1a6-4847-b188-d431841dfbfd",
+			"key": "put_data_firstname",
+			"value": "\"PutFirstName\""
+		},
+		{
+			"id": "9ff37d2b-e207-42c3-84ce-da5b958f7853",
+			"key": "put_data_lastname",
+			"value": "\"PutLastName\""
+		},
+		{
+			"id": "49737833-a74b-4399-bc6f-17620a2db5cb",
+			"key": "put_data_email",
+			"value": "\"put_test@test.com\""
+		},
+		{
+			"id": "d33bc642-3a11-46e5-a184-80957716fa84",
+			"key": "put_data_phone",
+			"value": "\"+77777777777\""
+		},
+		{
+			"id": "bf035ee6-e99c-494e-9f78-314a873e53a2",
+			"key": "baseUrl",
+			"value": "arch.homework"
+		},
+		{
+			"id": "05d858cf-78e1-4e4b-bdf9-8fe6808fc185",
+			"key": "studentName",
+			"value": "rined"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
