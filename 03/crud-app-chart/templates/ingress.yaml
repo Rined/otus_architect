@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "crud-app-chart.fullname" . }}
+  labels:
+    {{- include "crud-app-chart.labels" . | nindent 4 }}  
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /api/v1/$1
+spec:
+  rules:
+  - host: {{ .Values.host }}
+    http:
+      paths:
+        - path: {{ .Values.context_path_template }}
+          backend:
+            serviceName: {{ include "crud-app-chart.fullname" . }}
+            servicePort: {{ .Values.service.port }}
+            

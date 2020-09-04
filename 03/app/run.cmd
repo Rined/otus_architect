@@ -1,0 +1,1 @@
+docker run -it --name crud-run -p 8000:8000 --env-file env.list --add-host pg-db:localhost rined/crud-app:v1

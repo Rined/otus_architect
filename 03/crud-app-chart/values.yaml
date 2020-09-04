@@ -1,0 +1,79 @@
+replicaCount: 2
+updateType: RollingUpdate
+host: arch.homework
+context_path_template: /otusapp/rined/(.*)
+
+image: rined/prometheus-crud-app:v2
+
+service:
+  type: NodePort
+  port: 9000
+
+postgresql:
+  postgresqlUsername: rined
+  postgresqlPassword: password
+  postgresqlDatabase: otus_crud_app
+  service:
+    port: "5432"
+
+prometheus-operator:
+  grafana:
+    adminPassword: password
+    notifiers:
+      notifiers.yaml:
+        notifiers:
+          - name: Email
+            type: email
+            uid: notifier1           
+            is_default: true
+            send_reminder: false
+            disable_resolve_message: false
+            settings:
+              addresses: example@example.example
+              uploadImage: false              
+    grafana.ini:
+      smtp:
+        enabled: true
+        host: smtp.gmail.com:587
+        from_address: 
+        user: 
+        password: 
+        skip_verify: true
+        from_name: Grafana
+    service:
+      type: NodePort
+      nodePort: 30002
+  prometheus:
+    service:
+      type: NodePort
+      nodePort: 30001  
+    prometheusSpec:
+      serviceMonitorSelectorNilUsesHelmValues: false
+      serviceMonitorSelector: {}
+      additionalScrapeConfigs:
+        - job_name: pg-exporter
+          scrape_interval: 1m
+          static_configs:
+          - targets: ['pg-exporter:80']
+nginx-ingress:
+  controller:
+    kind: DaemonSet
+    reportNodeInternalIp: true
+    daemonset:
+      useHostPort: true
+      hostPorts:
+        http: 80
+        https: 443
+    service:
+      type: NodePort
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+prometheus-postgres-exporter:
+  config:
+    datasource:
+      host: pg-db
+      user: rined
+      password: password
+      database: otus_crud_app
