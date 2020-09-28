@@ -1,0 +1,737 @@
+{
+	"info": {
+		"_postman_id": "67839e49-4e4d-41bf-9027-2b192b9a4d16",
+		"name": "otus_arch_auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "registration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f06f73f7-e91c-4ddf-b0ff-b5c604890527",
+						"exec": [
+							"pm.test(\"Should return status 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b0323392-8e02-4392-bbf7-f74b4889afc0",
+						"exec": [
+							"pm.collectionVariables.set(\r",
+							"    \"login\", \r",
+							"    pm.variables.replaceIn('{{$randomUserName}}')\r",
+							");\r",
+							"pm.collectionVariables.set(\r",
+							"    \"password\", \r",
+							"    pm.variables.replaceIn('{{$randomPassword}}')\r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\": \"{{login}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/auth/{{studentName}}/registration",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"{{studentName}}",
+						"registration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get profile before login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "63ab949c-17a7-4c82-9427-2ac16b53f979",
+						"exec": [
+							"pm.test(\"Should return default unauth message from /signin url\", function () {\r",
+							"    const responseJSON = pm.response.json();\r",
+							"    pm.expect(responseJSON.message).to.eql(\"Please go to /login and provide Login/Password\");   \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/otusapp/{{studentName}}/user/me",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"otusapp",
+						"{{studentName}}",
+						"user",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update profile before login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "143cbaf2-78df-4c74-9a28-cd4900ce925f",
+						"exec": [
+							"pm.test(\"Should return default unauth message from /signin url\", function () {\r",
+							"    const responseJSON = pm.response.json();\r",
+							"    pm.expect(responseJSON.message).to.eql(\"Please go to /login and provide Login/Password\");   \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b3a79905-2cb2-4454-8df5-3d39d2935360",
+						"exec": [
+							"pm.collectionVariables.set(\r",
+							"    \"email\", \r",
+							"    pm.variables.replaceIn('{{$randomEmail}}')\r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"{{login}}\",\r\n    \"lastName\": \"{{password}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"phone\": \"{{phone}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/otusapp/{{studentName}}/user/me",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"otusapp",
+						"{{studentName}}",
+						"user",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "de8d807f-2ecb-4293-8fc5-7f4e0ff31f0a",
+						"exec": [
+							"pm.test(\"Should return status 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\": \"{{login}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/auth/{{studentName}}/login",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"{{studentName}}",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f6e67d5c-ab42-4471-91d6-ffa864c9e3fe",
+						"exec": [
+							"pm.test(\"Should return correct data\", function () {\r",
+							"    const responseJSON = pm.response.json();\r",
+							"    const collectionVars = pm.collectionVariables;\r",
+							"\r",
+							"     pm.expect(`${responseJSON.username}`)\r",
+							"        .to.eql(collectionVars.get(\"login\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.firstName}`)\r",
+							"        .to.eql(collectionVars.get(\"firstName\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.lastName}`)\r",
+							"        .to.eql(collectionVars.get(\"lastName\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.email}`)\r",
+							"        .to.eql(collectionVars.get(\"email\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.phone}`)\r",
+							"        .to.eql(collectionVars.get(\"phone\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should be return correct status (200)\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "29a4bad9-29e8-484e-9fd9-3abcc36631c1",
+						"exec": [
+							"pm.collectionVariables.set(\r",
+							"    \"firstName\", \r",
+							"    pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							");\r",
+							"\r",
+							"pm.collectionVariables.set(\r",
+							"    \"lastName\", \r",
+							"    pm.variables.replaceIn('{{$randomLastName}}')\r",
+							");\r",
+							"\r",
+							"pm.collectionVariables.set(\r",
+							"    \"email\", \r",
+							"    pm.variables.replaceIn('{{$randomEmail}}')\r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"{{firstName}}\",\r\n    \"lastName\": \"{{lastName}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"phone\": \"{{phone}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/otusapp/{{studentName}}/user/me",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"otusapp",
+						"{{studentName}}",
+						"user",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "second update test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f2661389-59c2-4854-a6a1-aa60fda64ac4",
+						"exec": [
+							"pm.test(\"Should return correct data\", function () {\r",
+							"    const responseJSON = pm.response.json();\r",
+							"    const collectionVars = pm.collectionVariables;\r",
+							"\r",
+							"     pm.expect(`${responseJSON.username}`)\r",
+							"        .to.eql(collectionVars.get(\"login\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.firstName}`)\r",
+							"        .to.eql(collectionVars.get(\"firstName\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.lastName}`)\r",
+							"        .to.eql(collectionVars.get(\"lastName\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.email}`)\r",
+							"        .to.eql(collectionVars.get(\"email\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.phone}`)\r",
+							"        .to.eql(collectionVars.get(\"phone\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should be return correct status (200)\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2c66ec7d-8680-413f-901a-0cdc05987a91",
+						"exec": [
+							"pm.collectionVariables.set(\r",
+							"    \"firstName\", \r",
+							"    pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							");\r",
+							"\r",
+							"pm.collectionVariables.set(\r",
+							"    \"lastName\", \r",
+							"    pm.variables.replaceIn('{{$randomLastName}}')\r",
+							");\r",
+							"\r",
+							"pm.collectionVariables.set(\r",
+							"    \"email\", \r",
+							"    pm.variables.replaceIn('{{$randomEmail}}')\r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"{{firstName}}\",\r\n    \"lastName\": \"{{lastName}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"phone\": \"{{phone}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/otusapp/{{studentName}}/user/me",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"otusapp",
+						"{{studentName}}",
+						"user",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get profile after login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "74132609-c22c-4dd6-bf40-df0fdd2d879d",
+						"exec": [
+							"pm.test(\"Should return correct data\", function () {\r",
+							"    const responseJSON = pm.response.json();\r",
+							"    const collectionVars = pm.collectionVariables;\r",
+							"\r",
+							"     pm.expect(`${responseJSON.username}`)\r",
+							"        .to.eql(collectionVars.get(\"login\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.firstName}`)\r",
+							"        .to.eql(collectionVars.get(\"firstName\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.lastName}`)\r",
+							"        .to.eql(collectionVars.get(\"lastName\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.email}`)\r",
+							"        .to.eql(collectionVars.get(\"email\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.phone}`)\r",
+							"        .to.eql(collectionVars.get(\"phone\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should be return correct status (200)\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/otusapp/{{studentName}}/user/me",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"otusapp",
+						"{{studentName}}",
+						"user",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a6446963-2a78-4e87-bd57-d65ee3f49178",
+						"exec": [
+							"pm.test(\"Should be return correct status (200)\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/auth/{{studentName}}/logout",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"{{studentName}}",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "second user registration",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e95d8a56-b358-4c1e-9cc0-142efe45c08a",
+						"exec": [
+							"pm.collectionVariables.set(\r",
+							"    \"login2\", \r",
+							"    pm.variables.replaceIn('{{$randomUserName}}')\r",
+							");\r",
+							"pm.collectionVariables.set(\r",
+							"    \"password2\", \r",
+							"    pm.variables.replaceIn('{{$randomPassword}}')\r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "26cfc2b3-637a-4c4b-9a16-66ed1e7e8732",
+						"exec": [
+							"pm.test(\"Should return status 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\": \"{{login2}}\",\r\n    \"password\": \"{{password2}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/auth/{{studentName}}/registration",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"{{studentName}}",
+						"registration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "second user login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "66024fee-d698-4733-9f37-cd9c61eb6c4c",
+						"exec": [
+							"pm.test(\"Should return status 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\": \"{{login2}}\",\r\n    \"password\": \"{{password2}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/auth/{{studentName}}/login",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"{{studentName}}",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get first user profile by second user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "04c02084-91b9-4196-bba3-a27bc5c0cfa6",
+						"exec": [
+							"pm.test(\"Should not return first user data\", function () {\r",
+							"    const responseJSON = pm.response.json();\r",
+							"    const collectionVars = pm.collectionVariables;\r",
+							"\r",
+							"     pm.expect(`${responseJSON.username}`)\r",
+							"        .not.eql(collectionVars.get(\"login\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.firstName}`)\r",
+							"        .not.eql(collectionVars.get(\"firstName\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.lastName}`)\r",
+							"        .not.eql(collectionVars.get(\"lastName\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.email}`)\r",
+							"        .not.eql(collectionVars.get(\"email\"));\r",
+							"\r",
+							"    pm.expect(`${responseJSON.phone}`)\r",
+							"        .not.eql(collectionVars.get(\"phone\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should be return correct status (200)\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/otusapp/{{studentName}}/user/me",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"otusapp",
+						"{{studentName}}",
+						"user",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0056b171-cd68-4a78-9b46-ebc2b65a3989",
+						"exec": [
+							"pm.test(\"Should be return correct status (200)\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/auth/{{studentName}}/logout",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"{{studentName}}",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c49449fc-5b67-4f46-8599-b43c30bb653d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "11d44440-28a4-41c1-ac1a-e6b6afcba459",
+				"type": "text/javascript",
+				"exec": [
+					"tests[\"[INFO] Request: \" + (('data' in request) ? request['data'] : '') ] = true;",
+					"tests[\"[INFO] Response: \" + responseBody] = true;"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "ca0e2f04-51d6-4689-b41c-c3a89cedcc76",
+			"key": "baseUrl",
+			"value": "arch.homework"
+		},
+		{
+			"id": "6afba688-08e9-4660-81ce-81b5dceb405b",
+			"key": "studentName",
+			"value": "rined"
+		},
+		{
+			"id": "1b0f05d1-1bc7-46c5-a199-d0651e8761d6",
+			"key": "login",
+			"value": "Ivy_Stiedemann44"
+		},
+		{
+			"id": "8f676368-9756-49f6-9aa3-89f0f28a76fa",
+			"key": "password",
+			"value": "41WJa7ikbLzAhAM"
+		},
+		{
+			"id": "89b1fe5b-f1f2-4966-977c-31c7448c5ee4",
+			"key": "email",
+			"value": "Bernie_Swift41@hotmail.com"
+		},
+		{
+			"id": "c5bbd005-4f0a-48d2-95cd-3ac4f491d0b7",
+			"key": "phone",
+			"value": "+79999999999"
+		},
+		{
+			"id": "331c337c-f952-4ab3-baba-8a14dc27ce07",
+			"key": "firstName",
+			"value": "Blaze"
+		},
+		{
+			"id": "73038676-7c3c-4251-87ea-7824d60ee224",
+			"key": "lastName",
+			"value": "Hyatt"
+		},
+		{
+			"id": "d5eeea46-c02d-49cc-ad7c-aef18f079e78",
+			"key": "login2",
+			"value": "Elva.Hackett18"
+		},
+		{
+			"id": "09717fd1-856d-4302-9142-f648288c62dc",
+			"key": "password2",
+			"value": "kvyhKdwHR1mE1Kz"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

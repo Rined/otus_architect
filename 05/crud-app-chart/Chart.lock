@@ -1,0 +1,15 @@
+dependencies:
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 8.10.14
+- name: prometheus-operator
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 9.3.1
+- name: nginx-ingress
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 1.41.2
+- name: prometheus-postgres-exporter
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 1.3.0
+digest: sha256:ce5cf50c5b231b4abba6c93d8dbbc7a17ca513d165c8223e0ef261729610d175
+generated: "2020-09-02T20:25:44.785817+03:00"

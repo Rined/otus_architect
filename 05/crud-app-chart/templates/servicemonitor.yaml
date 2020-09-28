@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "crud-app-chart.fullname" . }}
+  labels:
+    {{- include "crud-app-chart.labels" . | nindent 4 }}
+spec:
+  jobLabel: {{ include "crud-app-chart.fullname" . }}
+  namespaceSelector:
+    matchNames:
+    - "{{ $.Release.Namespace }}"
+  selector:
+    matchLabels:
+      {{- include "crud-app-chart.selectorLabels" . | nindent 6 }}
+  endpoints:
+  - interval: 15s
+    port: http
+    path: /api/v1/prometheus

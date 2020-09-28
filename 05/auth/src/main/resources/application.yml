@@ -1,0 +1,37 @@
+server:
+  port: 8000
+  error:
+    include-message: always
+
+management:
+  endpoint:
+    health:
+      enabled: true
+      show-details: never
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: /
+      exposure:
+        include: '*'
+
+spring:
+  datasource:
+    url: jdbc:postgresql://pg-auth-db:${pg.port}/${pg.db}
+    username: ${pg.user}
+    password: ${pg.password}
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+  redis:
+    host: ${redis.host}
+    port: ${redis.port}
+    password: ${redis.password}
+  session:
+    store-type: redis
+    redis:
+      namespace: spring:session
+      flush-mode: on_save

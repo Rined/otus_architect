@@ -1,0 +1,22 @@
+replicaCount: 2
+updateType: RollingUpdate
+host: arch.homework
+context_path_template: /auth/rined/(.*)
+
+image: rined/otus-05-auth:v6
+
+service:
+  type: NodePort
+  port: 9000
+
+postgresql:
+  postgresqlUsername: rined
+  postgresqlPassword: password
+  postgresqlDatabase: otus_crud_app
+  service:
+    port: "5432"
+
+redis:
+  fullnameOverride: redis-session
+  password: password
+  redisPort: 6379
