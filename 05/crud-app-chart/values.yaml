@@ -55,21 +55,6 @@ prometheus-operator:
           scrape_interval: 1m
           static_configs:
           - targets: ['pg-exporter:80']
-nginx-ingress:
-  controller:
-    kind: DaemonSet
-    reportNodeInternalIp: true
-    daemonset:
-      useHostPort: true
-      hostPorts:
-        http: 80
-        https: 443
-    service:
-      type: NodePort
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
 prometheus-postgres-exporter:
   config:
     datasource:
