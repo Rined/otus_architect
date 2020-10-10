@@ -1,0 +1,41 @@
+asyncapi: 2.0.0
+info:
+  title: Оплата товара
+  version: '1.0.0'
+  description: |
+    Пример взаимодействия при заказе
+defaultContentType: application/json
+
+channels:  
+  order-service/OrderResponse:
+    publish:
+      message:
+        tags:
+          - name: notification
+        name: Отправка письма
+        payload:
+           type: object
+           properties:
+             userId:
+               type: integer
+             result:
+               type: boolean
+             email: 
+               type: string
+             firstName: 
+               type: string
+             lastName: 
+               type: string
+           required: 
+             - userId
+             - result
+             - email
+             - firstName
+             - lastName
+        examples:
+          - payload:
+              userId: 37
+              result: true
+              email: bestjohn@doe.com
+              firstName: John
+              lastName: Doe             

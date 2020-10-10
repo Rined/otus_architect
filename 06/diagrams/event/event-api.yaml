@@ -1,0 +1,174 @@
+asyncapi: 2.0.0
+info:
+  title: Оплата товара
+  version: '1.0.0'
+  description: |
+    Пример взаимодействия при заказе
+defaultContentType: application/json
+
+channels:
+  gateway/OrderCreateRequested:
+    publish:
+      message:
+        tags:
+          - name: order
+        name: order create requested
+        title: Пользователь создал заказ
+        payload:
+           type: object
+           properties:
+             userId:
+               type: integer
+               format: int64
+             username:
+               type: string
+             price:
+               type: integer
+               format: int64             
+           required: 
+             - userId
+             - username
+             - price
+        examples:
+          - payload:
+              userId: 1
+              username: johndoe
+              price: 4200              
+            headers:
+              correlationId: 3241-1231-3123-1231
+              
+  order-service/UserInfoRequested:
+    publish:
+      message:
+        tags:
+          - name: user
+        name: request user info
+        title: Запрошена информация о пользователе
+        payload:
+           type: object
+           properties:
+             userId:
+               type: integer
+               format: int64
+             username:
+               type: string
+           required: 
+             - userId
+             - username
+        examples:
+          - payload:
+              userId: 1
+              username: johndoe
+          
+  user-service/UserInfo:
+    publish:
+      message:
+        tags:
+          - name: order    
+        name: Информация о пользователе
+        payload:
+           type: object
+           properties:
+             id:
+               type: integer
+             username: 
+               type: string
+             firstName: 
+               type: string
+             lastName: 
+               type: string
+             email: 
+               type: string
+             phone: 
+               type: string
+           required: 
+             - id             
+             - username                  
+             - firstName
+             - lastName
+             - email             
+        examples:
+          - payload:
+              id: 37
+              username: johndoe
+              firstName: John
+              lastName: Doe
+              email: bestjohn@doe.com
+              phone: +79999999999
+  order-service/BillingRequested:
+    publish:
+      message:
+        tags:
+          - name: billing
+        name: Запрос на списание средств
+        payload:
+           type: object
+           properties:
+             userId:
+               type: integer
+             price: 
+               type: integer 
+           required: 
+             - userId             
+             - price               
+        examples:
+          - payload:
+              userId: 37
+              price: 4200
+  billing-service/PaymentProcessed:
+    publish:
+      message:
+        tags:
+          - name: order
+        name: Результат списания средств
+        payload:
+           type: object
+           properties:
+             userId:
+               type: integer
+             price: 
+               type: integer
+             result:
+               type: boolean
+           required: 
+             - userId             
+             - price
+             - result
+        examples:
+          - payload:
+              userId: 37
+              price: 4200
+              result: true
+  order-service/OrderCompleted:
+    publish:
+      message:
+        tags:
+          - name: notification
+        name: Результат по оформлению заказа
+        payload:
+           type: object
+           properties:
+             userId:
+               type: integer
+             result:
+               type: boolean
+             email: 
+               type: string
+             firstName: 
+               type: string
+             lastName: 
+               type: string
+           required: 
+             - userId
+             - result
+             - email
+             - firstName
+             - lastName
+        examples:
+          - payload:
+              userId: 37
+              result: true
+              email: bestjohn@doe.com
+              firstName: John
+              lastName: Doe
+              

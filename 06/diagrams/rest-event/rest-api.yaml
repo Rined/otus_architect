@@ -1,0 +1,279 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: HW-6-Rest-Event
+
+tags:
+  - name: user
+    description: Сервис пользовательской информации
+  - name: order
+    description: Сервис формирования заказов
+  - name: billing
+    description: Сервис оплаты
+  - name: notification
+    description: Сервис уведомлений
+
+paths:
+  /account/balance/{userId}:
+    get:
+      tags:
+        - billing
+      summary: Баланс счета
+      operationId: balance
+      description: Баланс счета
+      parameters:
+        - name: userId
+          in: path
+          description: ID пользователя
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example:
+              userId: 37
+      responses:
+        '200':
+          description: Деньги успешно пополнены
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: integer
+                    example: 5000 
+  /account/deposit/{userId}:
+    post:
+      tags:
+        - billing
+      summary: Пополнение счета
+      operationId: deposit
+      description: Пополнить счет
+      parameters:
+        - name: userId
+          in: path
+          description: ID пользователя
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example:
+              userId: 37      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                price:
+                  type: integer
+              required: 
+                - price
+            example:
+              price: 4200
+      responses:
+        '200':
+          description: Деньги успешно пополнены
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: boolean
+                    example: true          
+  /account/withdraw/{userId}:
+    post:
+      tags:
+        - billing
+      summary: Снятие денег
+      operationId: withdraw
+      description: Снять деньги со счета
+      parameters:
+        - name: userId
+          in: path
+          description: ID пользователя
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example:
+              userId: 37      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                price:
+                  type: integer
+              required: 
+                - price
+            example:
+              price: 4200
+      responses:
+        '200':
+          description: Деньги успешно сняты
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: boolean
+                    example: true          
+  /order/create:
+    post:
+      tags:
+        - order
+      summary: Формирование заказа
+      operationId: createOrder
+      description: Сформировать заказ
+      parameters:
+      - name: X-UserId
+        in: header
+        description: Id пользователя
+        required: true
+        schema:
+            type: integer
+      - name: X-Username
+        in: header
+        description: Логин пользователя
+        required: true
+        schema:
+            type: string      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                price: 
+                  type: integer
+              required: 
+                - price
+            example: 
+              price: 4200
+      responses:
+        '200':
+          description: Обновленная информация о пользователе
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: boolean
+                    example: true
+              
+  /user/me:
+    get:
+      tags:
+        - user
+      summary: Информация пользователя
+      operationId: userInfo
+      description: |
+        Информация пользователя. Если пользователь есть в базе то возвращает данные из базы иначе возвращает то, что получил в заголовках
+      parameters:
+      - name: X-UserId
+        in: header
+        description: Id пользователя
+        required: true
+        schema:
+            type: integer
+      - name: X-Username
+        in: header
+        description: Логин пользователя
+        required: true
+        schema:
+            type: string
+      responses:
+        '200':
+          description: Информация о пользователе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        '400':
+          description: bad input parameter
+    put:
+      tags:
+      - user
+      summary: Обновить информацию о пользователе
+      operationId: addInventory
+      description: Обновить информацию о пользователе
+      parameters:
+      - name: X-UserId
+        in: header
+        description: Id пользователя
+        required: true
+        schema:
+            type: integer
+      - name: X-Username
+        in: header
+        description: Логин пользователя
+        required: true
+        schema:
+            type: string      
+      requestBody:
+        $ref: '#/components/requestBodies/UserInfo'
+      responses:
+        '200':
+          description: Обновленная информация о пользователе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        '400':
+          description: invalid input, object invalid
+components:
+  schemas:
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 37
+        username:
+          type: string
+          example: johndoe
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Doe
+        email:
+          type: string
+          example: bestjohn@doe.com
+        phone:
+          type: string
+          example: '+79999999999'
+      required:
+        - id
+        - username
+        - firstName
+        - lastName
+        - email
+        - phone
+  requestBodies:
+    UserInfo:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserInfo'
+          examples:
+            sample-user-info:
+              summary: Пример информации о пользователе
+              value:
+                username: johndoe
+                firstName: John
+                lastName: Doe
+                email: bestjohn@doe.com
+                phone: '+79999999999'
+      description: User object that needs to be created
+      required: true
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/NOO/otus_hw_6_rest_event/1.0.0
